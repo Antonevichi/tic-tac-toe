@@ -1,21 +1,20 @@
-# Создайте программу для игры в "Крестики-нолики".
+# Игра "Крестики-нолики".
 
-# Игра начинается с хода человека, который ставит крестики
+
 
 import random
 from tkinter import *
 import os
 os.system("cls")
 
-root = Tk()         # делаем окно с заголовком
+root = Tk()        
 root.title('Крестики-нолики')
 
-game_run = True     # если будет победитель, будет False
-field = []          # в массиве храним состояние поля
-cross_count = 0     # Подсчитываем количество крестиков на поле, максимально 5
+game_run = True     
+field = []         
+cross_count = 0     
 
-
-def new_game():     # поле и переменные обнуляются
+def new_game():   
     for row in range(3):
         for col in range(3):
             field[row][col]['text'] = ' '
@@ -25,19 +24,15 @@ def new_game():     # поле и переменные обнуляются
     global cross_count
     cross_count = 0
 
-
-def click(row, col):        # ставим крестик и считаем
+def click(row, col):       
     if game_run and field[row][col]['text'] == ' ':
         field[row][col]['text'] = 'X'
         global cross_count
         cross_count += 1
-        check_win('X')      # проверка на победу
+        check_win('X')     
         if game_run and cross_count < 5:
             computer_move()
-            check_win('O')  # проверка на победу
-
-# проверка победы по всем направлениям
-
+            check_win('O') 
 
 def check_win(smb):
     for n in range(3):
@@ -46,18 +41,13 @@ def check_win(smb):
     check_line(field[0][0], field[1][1], field[2][2], smb)
     check_line(field[2][0], field[1][1], field[0][2], smb)
 
-# на входе три поля и символ, если символ есть в этих трех полях,
-# то меняем цвет полей на розовый и остановка игры
-
-
 def check_line(a1, a2, a3, smb):
     if a1['text'] == smb and a2['text'] == smb and a3['text'] == smb:
         a1['background'] = a2['background'] = a3['background'] = 'pink'
         global game_run
         game_run = False
 
-
-def can_win(a1, a2, a3, smb):   # проверка на победу
+def can_win(a1, a2, a3, smb):  
     res = False
     if a1['text'] == smb and a2['text'] == smb and a3['text'] == ' ':
         a3['text'] = 'O'
@@ -70,7 +60,6 @@ def can_win(a1, a2, a3, smb):   # проверка на победу
         res = True
     return res
 
-
 def computer_move():
     for n in range(3):
         if can_win(field[n][0], field[n][1], field[n][2], 'O'):
@@ -82,15 +71,14 @@ def computer_move():
     if can_win(field[2][0], field[1][1], field[0][2], 'O'):
         return
 
-    while True:  # случайным образом перебираются поля, пока не выпадет свободное
+    while True:  
         row = random.randint(0, 2)
         col = random.randint(0, 2)
         if field[row][col]['text'] == ' ':
             field[row][col]['text'] = 'O'
             break
 
-
-for row in range(3):  # создаем поле кнопок
+for row in range(3):  
     line = []
     for col in range(3):
         button = Button(text=' ', width=6, height=3,
